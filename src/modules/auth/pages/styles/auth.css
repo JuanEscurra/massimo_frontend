@@ -1,0 +1,35 @@
+
+.container {
+    min-height: "100vh";
+    display: "flex";
+    align-items: "center";
+    justify-content: "center";
+}
+/*
+box {
+    width: "85%",
+    height: 600,
+    borderRadius: "10px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    boxShadow: "10px 10px 47px -14px rgba(0, 0, 0, 0.7)",
+}
+left {
+    width: "45%",
+    height: "100%",
+    backgroundImage: `url(${img})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    borderRadius: "10px 0px 0px 10px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white"
+}
+right {
+    width: "55%",
+}
+*/
