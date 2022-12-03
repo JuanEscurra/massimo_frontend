@@ -23,7 +23,7 @@ import ProductTableBody from "./ProductTableBody";
 
 const theadCells: TableCellProps[] = [
   {
-    children: "#"
+	children: "#"
   },
   {
     children: 'imagen'
@@ -99,10 +99,10 @@ export const ProductList = () => {
 						</TableRow>
 					</TableHead>
 					<ProductTableBody
-            products={page.content}
-            pageNumber={pageNumber}
-            rowsPerPage={rowsPerPage}
-            getData={getData} />
+						products={page.content}
+						pageNumber={pageNumber}
+						rowsPerPage={rowsPerPage}
+						getData={getData} />
 				</Table>
 			</TableContainer>
 			<TablePagination

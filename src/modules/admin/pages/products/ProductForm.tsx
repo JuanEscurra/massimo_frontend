@@ -1,8 +1,12 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { getCategories, saveProduct } from 'modules/admin/services/ProductService';
-import React, { Fragment, useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form';
+import { ChangeEvent, Fragment, useEffect, useState } from 'react'
+
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Controller, useForm } from 'react-hook-form';
+
+import { getCategories, getProductById, saveProduct } from 'modules/admin/services/ProductService';
+import imageDefault from 'assets/img/image-default.jpg';
 import Product, { Category } from 'shared/models/Product';
 import { Toast } from 'shared/utilities/Alerts';
 import { defaultValues } from 'shared/validation/product';
@@ -10,8 +14,10 @@ import { defaultValues } from 'shared/validation/product';
 
 const ProductForm = () => {
 
-  const [image, setImage] = useState<File>();
+  const [image, setImage] = useState<File | null>();
+  const [preview, setPreview] = useState<string>();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const { idProduct } = useParams();
   const navigate = useNavigate();
@@ -23,29 +29,52 @@ const ProductForm = () => {
       .then(data => {
         console.log(data)
         setCategories(data);
-      })
+      });
+    
+    if(!isNaN(Number(idProduct))) {
+      console.log('idProduct: ', idProduct);
+      getProductById(Number(idProduct))
+        .then(product => {
+          reset(product);
+          setPreview(product.url);
+        })
+    }
+    
   }, []);
 
+  useEffect(() => {
+    if(image) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      }
+      reader.readAsDataURL(image);
+    }
+  }, [image]);
 
   const onSubmit = (data: Product) => {
-    console.log('image', image)
-    if(image) {
-      saveProduct(data, image)
-        .then((newProduct) => {
-          Toast.fire({'icon': 'success', 'title': `Se ha guardado el producto ${newProduct?.name}`});
-          navigate("/admin/products");
-        })
+    console.log('image', image);
+    setLoading(true);
+    saveProduct(data, image)
+      .then((newProduct) => {
+        Toast.fire({'icon': 'success', 'title': `Se ha guardado el producto ${newProduct?.name}`});
+        navigate("/admin/products");
+      }).finally(() => {
+        setLoading(false);
+      });
 
-    }
   }
 
+  const onSubmitFile = (event: ChangeEvent<HTMLInputElement>) => {
+    if(!event.target.files) return;
 
-  const onSubmitFile = async () => {
-    const inputFile = document.getElementById("fileInput") as HTMLInputElement;
-    
-    setImage(inputFile.files?.item(0) as File)
-
-  };
+    const file = event.target.files[0];
+    if(file) {
+      setImage(file);
+    } else {
+      setImage(null);
+    }
+  }
 
 
   return (
@@ -55,7 +84,14 @@ const ProductForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         style={{display: 'flex', flexWrap: 'wrap', gap: '40px', margin: '0 auto'}}
         autoComplete='off'>
-        <Box style={{display: 'flex', flexDirection: 'column',  gap: '20px', margin: '0 auto', width: 'max(60%, 350px)'}}>
+        <Paper variant='outlined' style={{width: 'min(100%, 550px)', height: '300px', display: 'flex', alignItems: 'end', justifyContent: 'center', margin: 'auto'}} >
+          <img src={preview || imageDefault} alt='producto para subir' style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+          <Button variant='contained' component='label' style={{position: 'absolute', margin: '30px'}}>
+            Subir imagen
+            <input hidden accept="image/*" multiple type="file" id='fileInput' onChange={onSubmitFile}/>
+          </Button>
+        </Paper>
+        <Box style={{display: 'flex', flexDirection: 'column',  gap: '20px', margin: '0 auto', width: 'min(100%, 550px)'}}>
           <Controller
             name='name'
             control={control}
@@ -95,14 +131,7 @@ const ProductForm = () => {
               />
             }
           />
-          <TextField
-            size='small'
-            label='Imagen'
-            variant='outlined'
-            type='file'
-            id='fileInput'
-            onChange={onSubmitFile}
-          />
+          
 
           <Controller
             name='category.id'
@@ -125,8 +154,12 @@ const ProductForm = () => {
               </TextField>
             } 
           />
-          <Button variant='contained' fullWidth size='medium' type='submit'>Editar usuario</Button>
-          <Button variant="text" fullWidth component={Link} to='../'>regresar</Button>
+          <LoadingButton loading={isLoading} variant='contained' fullWidth size='medium' type='submit'>
+            {!isNaN(Number(idProduct)) ? 'Editar producto' : 'Guardar producto'}
+          </LoadingButton>
+          <LoadingButton loading variant="text" fullWidth component={Link} to='../'>
+            regresar
+          </LoadingButton>
         </Box>
       </form>
     </Fragment>

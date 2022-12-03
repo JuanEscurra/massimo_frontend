@@ -41,21 +41,25 @@ export const deleteProduct = async(id: number): Promise<boolean> => {
   }
 }
 
-export const saveProduct = async(product: Product, image: File): Promise<Product> => {
+export const saveProduct = async(product: Product, image: File | null | undefined): Promise<Product> => {
   try {
     const formData = new FormData();
     formData.append('name', product.name);
     formData.append('price', product.price.toString());
     product.stock && formData.append('stock', product.stock.toString());
-    formData.append('file', image);
+    image && formData.append('file', image);
     product?.category?.id && formData.append('category', product?.category?.id.toString());
     
-    const response = await instance.post(`/products`, formData);
-
-    if(response?.status != 201) {
-        throw response.data;
+    let response; 
+    if(!product.id) {
+      response = await instance.post('/products/', formData);
+    } else {
+      response = await instance.put(`/products/${product.id}`, formData);
     }
-    return response.data;
+    if(response?.status == 201 || response?.status == 200) {
+      return response.data;
+    }
+    throw response.data;
   } catch(e) {
     throw e;
   }
@@ -67,6 +71,19 @@ export const getCategories = async(): Promise<Category[]>  => {
     if(response?.status === 200) {
       const categories: Category[] = response.data;
       return categories;
+    }
+    throw new Error('Error en al solicitar datos de los productos');
+  } catch(e) {
+    throw e;
+  }
+}
+
+export const getProductById = async(id: number): Promise<Product> => {
+  try {
+    const response = await instance.get(`/products/${id}`);
+    if(response?.status === 200) {
+      const product: Product = response.data;
+      return product;
     }
     throw new Error('Error en al solicitar datos de los productos');
   } catch(e) {
