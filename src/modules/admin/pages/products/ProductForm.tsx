@@ -2,6 +2,7 @@ import { ChangeEvent, Fragment, useEffect, useState } from 'react'
 
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, MenuItem, Paper, TextField, Typography } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Controller, useForm } from 'react-hook-form';
 
 import { getCategories, getProductById, saveProduct } from 'modules/admin/services/ProductService';
@@ -16,6 +17,7 @@ const ProductForm = () => {
   const [image, setImage] = useState<File | null>();
   const [preview, setPreview] = useState<string>();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const { idProduct } = useParams();
   const navigate = useNavigate();
@@ -51,12 +53,15 @@ const ProductForm = () => {
   }, [image]);
 
   const onSubmit = (data: Product) => {
-    console.log('image', image)
-      saveProduct(data, image)
-        .then((newProduct) => {
-          Toast.fire({'icon': 'success', 'title': `Se ha guardado el producto ${newProduct?.name}`});
-          navigate("/admin/products");
-        })
+    console.log('image', image);
+    setLoading(true);
+    saveProduct(data, image)
+      .then((newProduct) => {
+        Toast.fire({'icon': 'success', 'title': `Se ha guardado el producto ${newProduct?.name}`});
+        navigate("/admin/products");
+      }).finally(() => {
+        setLoading(false);
+      });
 
   }
 
@@ -149,8 +154,12 @@ const ProductForm = () => {
               </TextField>
             } 
           />
-          <Button variant='contained' fullWidth size='medium' type='submit'>Editar Producto</Button>
-          <Button variant="text" fullWidth component={Link} to='../'>regresar</Button>
+          <LoadingButton loading={isLoading} variant='contained' fullWidth size='medium' type='submit'>
+            {!isNaN(Number(idProduct)) ? 'Editar producto' : 'Guardar producto'}
+          </LoadingButton>
+          <LoadingButton loading variant="text" fullWidth component={Link} to='../'>
+            regresar
+          </LoadingButton>
         </Box>
       </form>
     </Fragment>
