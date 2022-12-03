@@ -6,29 +6,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
 import { ProductList } from './ProductList';
 
-
-const theadCells: TableCellProps[] = [
-  {
-    children: "Nombre"
-  },
-  {
-    children: "Stock",
-    align: "right"
-  },
-  {
-    children: "Precio",
-    align: "right"
-  },
-  {
-    children: "Categoria",
-    align: "center"
-  },
-  {
-    align: "center",
-    children: "Acciones",
-  }
-]
-
 interface Props {
 }
 
@@ -43,7 +20,7 @@ const ProductPage = ({} : Props) => {
           Agregar producto
         </Button>
       </Box>
-			<ProductList />
+        <ProductList />
     </Fragment>
   )
 }
