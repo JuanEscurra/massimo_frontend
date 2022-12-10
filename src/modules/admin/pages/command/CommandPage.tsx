@@ -6,9 +6,10 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { getAllCommands, saveCommand } from "modules/admin/services/CommandService";
+import { deleteCommand, getAllCommands, saveCommand } from "modules/admin/services/CommandService";
 import { Command, CommandStatus } from "shared/models/Command";
 import Page from "shared/models/page";
+import { DeleteAlert, Toast } from "shared/utilities/Alerts";
 
 
 
@@ -17,14 +18,14 @@ export const CommandPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [page, setPage] = useState<Page<Command>>();
   const input = useRef<HTMLInputElement>();
-  
+
 
   const createCommand = () => {
     const tableNumber = input.current?.valueAsNumber;
-    if(tableNumber) {
+    if (tableNumber) {
       console.log(tableNumber);
-      saveCommand({tableNumber, status: CommandStatus.POR_ATENDER})
-        .then((response) =>  {
+      saveCommand({ tableNumber, status: CommandStatus.POR_ATENDER })
+        .then((response) => {
           console.log(response);
           setOpen(false);
           navigate(`/admin/commands/${response.id}`);
@@ -32,18 +33,38 @@ export const CommandPage = () => {
     }
   }
 
-  useEffect(() => {
+  const getData = () => {
     getAllCommands()
       .then(data => setPage(data))
       .catch(e => console.log(e));
+  }
+
+  useEffect(() => {
+    getData();
   }, [])
-  
+
+  const deleteById = (id: number): void => {
+    DeleteAlert.fire({
+      icon: 'warning'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCommand(id)
+          .then(() => {
+            getData();
+            Toast.fire({
+              icon: 'success',
+              title: 'Se ha eliminado correctamente'
+            })
+          }).catch(({ details }) => Toast.fire({ icon: 'error', title: details }))
+      }
+    })
+  }
 
   return (
     <Fragment>
       <Typography variant="h3" align="center">
-				Gestionar comandas
-			</Typography>
+        Gestionar comandas
+      </Typography>
       <Box margin="30px 0">
         <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setOpen(true)} >
           Agregar comanda
@@ -88,23 +109,27 @@ export const CommandPage = () => {
                   <TableCell>{index + 1}</TableCell>
                   <TableCell align='center'>{command.tableNumber}</TableCell>
                   <TableCell>
-                    <Tooltip title="editar">
-                      <IconButton aria-label="editar" size="large" component={Link} to={`${command.id}`}>
+                    <Tooltip title="Editar">
+                      <IconButton aria-label="Eliminar" size="large" component={Link} to={`${command.id}`}>
                         <EditIcon fontSize="inherit" />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
                   <TableCell>
-                    Eliminar
+                    <Tooltip title="Eliminar">
+                      <IconButton aria-label="Eliminar" size="large" onClick={() => command.id && deleteById(command.id)}>
+                        <DeleteIcon fontSize="inherit" />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))
             }
           </TableBody>
         </Table>
-        
+
       </TableContainer>
-      
+
 
     </Fragment>
   )
