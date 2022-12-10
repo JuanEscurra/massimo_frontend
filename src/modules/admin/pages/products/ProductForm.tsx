@@ -157,7 +157,7 @@ const ProductForm = () => {
           <LoadingButton loading={isLoading} variant='contained' fullWidth size='medium' type='submit'>
             {!isNaN(Number(idProduct)) ? 'Editar producto' : 'Guardar producto'}
           </LoadingButton>
-          <LoadingButton loading variant="text" fullWidth component={Link} to='../'>
+          <LoadingButton variant="outlined" fullWidth component={Link} to='../'>
             regresar
           </LoadingButton>
         </Box>

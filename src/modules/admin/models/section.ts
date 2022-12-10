@@ -23,7 +23,7 @@ export const sections: section[] = [
   },
   {
     title: 'Generar comanda',
-    path: '/admin/orders',
+    path: '/admin/commands',
     icon: ListAltIcon
   },
   {

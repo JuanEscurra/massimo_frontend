@@ -4,8 +4,7 @@ export const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
-  marginTop: '48px',
-  padding: theme.spacing(3),
+  marginTop: '70px',
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
