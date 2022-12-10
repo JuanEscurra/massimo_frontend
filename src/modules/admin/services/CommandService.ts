@@ -1,4 +1,5 @@
 import { Command, CommandDetail } from "shared/models/Command";
+import Page from "shared/models/page";
 import { instance } from "./AdminInterceptors";
 
 export const saveCommand = async(command: Command): Promise<Command> => {
@@ -40,6 +41,17 @@ export const deleteCommandDetail = async(id: number): Promise<void> => {
     const response = await instance.delete(`/commands/details/${id}`);
 
     if(response.status != 204) throw response;
+  } catch(e) {
+    throw e;
+  }
+}
+
+export const getAllCommands = async(page:number = 0, size: number = 20): Promise<Page<Command>> => {
+  try {
+    const response = await instance.get('/commands', {params: {page, size}});
+    if(response.status != 200) throw response;
+    
+    return response.data;
   } catch(e) {
     throw e;
   }
