@@ -73,7 +73,7 @@ export const CommandPage = () => {
           <DialogTitle>Agregar una nueva comanda</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              ¿En qué numero de mesa está el cliente?
+              ¿En qué número de mesa está el cliente?
             </DialogContentText>
             <TextField
               inputRef={input}
@@ -87,12 +87,12 @@ export const CommandPage = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={createCommand}>Subscribe</Button>
+            <Button onClick={() => setOpen(false)}>Cancelar</Button>
+            <Button onClick={createCommand}>Agregar</Button>
           </DialogActions>
         </Dialog>
       </Box>
-      <TableContainer style={{ margin: "50px auto", width: '40%' }}>
+      <TableContainer style={{ margin: "50px auto", width: 'min(450px,100%)' }}>
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>

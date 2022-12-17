@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material"
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 import { getProductsByName } from "modules/admin/services/ProductService";
@@ -10,7 +10,7 @@ import { CardProduct } from "./CardProduct";
 import { Toast } from "shared/utilities/Alerts";
 import { Link, useParams } from "react-router-dom";
 import { deleteCommandDetail, getCommandById, saveCommandDetail } from "modules/admin/services/CommandService";
-import { Command, CommandDetail, CommandStatus } from "shared/models/Command";
+import { Command, CommandStatus } from "shared/models/Command";
 import { ItemRow } from "./ItemRow";
 
 
@@ -91,8 +91,8 @@ export const CommandForm = () => {
       </Box>
       {
         command &&
-        <TableContainer style={{width: 'max(65%, 350px)', margin: '30px auto'}}>
-        <Table>
+        <TableContainer style={{width: 'min(450px, 100%)', margin: '30px auto'}}>
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell>Producto</TableCell>

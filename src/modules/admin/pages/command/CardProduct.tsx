@@ -1,6 +1,6 @@
 import { Fragment, useRef, useState } from "react"
 
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from "@mui/material"
+import { Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from "@mui/material"
 
 import Product from "shared/models/Product"
 
@@ -45,15 +45,15 @@ export const CardProduct = ({product, addItem}: Props) => {
             autoFocus
             margin="dense"
             id="tableNumber"
-            label="Numero de mesa"
+            label="Cantidad de productos"
             type="number"
             fullWidth
             variant="standard"
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={addCommandDetail}>Subscribe</Button>
+          <Button onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button onClick={addCommandDetail}>Agregar</Button>
         </DialogActions>
       </Dialog>
     </Fragment>

@@ -1,10 +1,7 @@
 import { IconButton, TableCell, TableRow } from '@mui/material'
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Command, CommandDetail } from 'shared/models/Command';
-import { saveCommandDetail } from 'modules/admin/services/CommandService';
+import { CommandDetail } from 'shared/models/Command';
 
 
 interface Props {
