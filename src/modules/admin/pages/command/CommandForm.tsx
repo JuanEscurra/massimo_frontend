@@ -8,8 +8,13 @@ import Page from "shared/models/page";
 import Product from "shared/models/Product";
 import { CardProduct } from "./CardProduct";
 import { Toast } from "shared/utilities/Alerts";
-import { Link, useParams } from "react-router-dom";
-import { deleteCommandDetail, getCommandById, saveCommandDetail } from "modules/admin/services/CommandService";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {
+  deleteCommandDetail,
+  finishAttention,
+  getCommandById,
+  saveCommandDetail
+} from "modules/admin/services/CommandService";
 import { Command, CommandStatus } from "shared/models/Command";
 import { ItemRow } from "./ItemRow";
 
@@ -24,6 +29,7 @@ export const CommandForm = () => {
   const [ command, setCommand ] = useState<Command>(initCommand);
   const { idCommand } = useParams();
   const [page, setPage] = useState<Page<Product>>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProductsByName(0, 20, '')
@@ -75,6 +81,19 @@ export const CommandForm = () => {
   }
 
   const registerCommand = () => {
+    if(command.details && command.details?.length < 1) {
+      Toast.fire({
+        title: "Se debe agregar al menos un producto.",
+        icon: "error"
+      })
+      return;
+    }
+    if(idCommand) {
+      finishAttention(Number(idCommand))
+        .then(() => navigate('../'))
+        .catch((e) => console.log(e));
+
+    }
     console.log('registrar comanda');
   }
 

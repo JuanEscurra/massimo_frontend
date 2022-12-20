@@ -21,6 +21,7 @@ import { TicketPage } from "modules/admin/pages/tickets/TicketPage";
 import { ReportPage } from "modules/admin/pages/reports/ReportPage";
 import { ProfilePage } from "modules/admin/pages/profile/ProfilePage";
 import { CommandForm } from "modules/admin/pages/command/CommandForm";
+import Dashboard from "../modules/admin/pages/dashboard/Dashboard";
 
 
 export const routes: RouteObject[] = [
@@ -92,6 +93,18 @@ export const routes: RouteObject[] = [
 			{ path: "tickets", element: <TicketPage /> },
 			{ path: "reports", element: <ReportPage /> },
 			{ path: "profile", element: <ProfilePage /> },
+			{
+				path: "dashboard",
+				element: <Dashboard />
+			},
+			{
+				path: "*",
+				element: <Navigate to="dashboard" />
+			},
+			{
+				path: "",
+				element: <Navigate to="dashboard" />
+			}
 		],
 	},
 	{

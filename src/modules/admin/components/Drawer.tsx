@@ -4,9 +4,8 @@ import {
 	List,
 	ListItem,
 	ListItemIcon,
-	ListItemText,
-  IconButton,
-  Typography,
+	IconButton,
+	Typography, ListItemButton,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -16,6 +15,7 @@ import { DrawerHeader } from "./DrawerHeader";
 import icon from "assets/img/icon.png";
 import { NavLink } from "shared/components/link/NavLink";
 import { sections } from "../models/section";
+import { Link } from "react-router-dom";
 
 
 const drawerWidth = '250px';
@@ -43,19 +43,23 @@ export const Drawer = ({ isOpen, setIsOpen }: Props) => {
 		>
 			<DrawerHeader>
         <img src={icon} alt="logo" style={{width: '40px'}}/>
-        <Typography variant="h5" >Baratie</Typography>
+        <Typography variant="h5" style={{cursor: "pointer"}}>
+					<Link to="/admin/dashboard">Massimo</Link>
+				</Typography>
         <IconButton onClick={() => setIsOpen((isOpen: boolean) => !isOpen)}>
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </DrawerHeader>
 			<Divider />
 			<List>
-				{sections.map((section, index) => (
-					<ListItem button key={section.title} component={NavLink} to={section.path}>
-						<ListItemIcon>
-							{<section.icon />}
-						</ListItemIcon>
-						<ListItemText primary={section.title} />
+				{sections.map((section) => (
+					<ListItem key={section.title} component={NavLink} to={section.path} style={{fontSize: "0.9rem", color: "black"}}>
+						<ListItemButton>
+							<ListItemIcon>
+								{<section.icon />}
+							</ListItemIcon>
+							{ section.title }
+						</ListItemButton>
 					</ListItem>
 				))}
 			</List>
