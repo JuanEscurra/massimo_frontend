@@ -1,10 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { Avatar, Box, IconButton, Menu, MenuItem, Toolbar as ToolbarMUI, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 
 import avatar from "assets/img/avatar_min.png";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { startLogout } from "modules/auth/actions/auth";
 
@@ -26,8 +25,6 @@ export const Toolbar = ({setIsOpen}: Props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-
 
   return (
     <ToolbarMUI variant="dense" sx={{

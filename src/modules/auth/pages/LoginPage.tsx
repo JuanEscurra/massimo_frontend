@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 
 import { Link } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form';

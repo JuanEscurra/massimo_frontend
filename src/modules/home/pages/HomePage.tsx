@@ -1,5 +1,5 @@
 import { Container } from '@mui/material'
-import React, { FunctionComponent, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 
 const HomePage = (): ReactElement => {
   return (

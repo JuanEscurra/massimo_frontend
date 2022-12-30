@@ -1,5 +1,5 @@
 import { RegisterOptions } from "react-hook-form";
-import { User, Role } from "shared/models/User";
+import { User } from "shared/models/User";
 
 
 export const defaultValues: User = {

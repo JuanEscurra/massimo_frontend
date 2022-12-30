@@ -5,23 +5,25 @@ import {Box, Fab, Paper} from '@mui/material';
 
 import {Drawer} from '../components/Drawer';
 import {Toolbar} from '../components/Toolbar';
-import {AppBar} from '../components/AppBar';
-import {Main} from '../components/Main';
 import ScrollTop from 'shared/components/scrollTop/ScrollTop';
 
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import MuiAppBar from "@mui/material/AppBar";
 
 const AdminPage = () => {
 
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <Box sx={{flexGrow: 1, minHeight: "92vh", padding: "20px"}} bgcolor="#E2E2E2">
-      <AppBar position="fixed" open={isOpen}>
+      <MuiAppBar position="fixed" sx={{width: {
+        sm: 'calc(100% - 250px)',
+          xs: '100%'
+        }}} >
         <Toolbar setIsOpen={setIsOpen}/>
-      </AppBar>
+      </MuiAppBar>
       <Drawer isOpen={isOpen} setIsOpen={setIsOpen}/>
-      <Main open={!isOpen} id="main-admin">
+      <Box component="main" id="main-admin" sx={{ flexGrow: 1, width: { sm: `calc(100% - 250px)` }, margin: '70px 0 0 auto' }}>
         <Paper elevation={2} style={{padding: "30px"}}>
           <Outlet/>
         </Paper>
@@ -30,7 +32,7 @@ const AdminPage = () => {
             <KeyboardArrowUpIcon/>
           </Fab>
         </ScrollTop>
-      </Main>
+      </Box>
     </Box>
   )
 }
