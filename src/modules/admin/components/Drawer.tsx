@@ -4,9 +4,8 @@ import {
 	List,
 	ListItem,
 	ListItemIcon,
-	ListItemText,
-  IconButton,
-  Typography,
+	IconButton,
+	Typography, ListItemButton,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -16,6 +15,8 @@ import { DrawerHeader } from "./DrawerHeader";
 import icon from "assets/img/icon.png";
 import { NavLink } from "shared/components/link/NavLink";
 import { sections } from "../models/section";
+import { Link } from "react-router-dom";
+import {Fragment} from "react";
 
 
 const drawerWidth = '250px';
@@ -25,41 +26,67 @@ type Props = {
   setIsOpen: Function
 };
 
-export const Drawer = ({ isOpen, setIsOpen }: Props) => {
-  const theme = useTheme();
+export const Drawer = (props: Props) => {
+
 	return (
-		<DrawerMUI
-			sx={{
-				width: drawerWidth,
-				flexShrink: 0,
-				"& .MuiDrawer-paper": {
-					width: drawerWidth,
-					boxSizing: "border-box",
-				},
-			}}
-			variant="persistent"
-			anchor="left"
-			open={isOpen}
-		>
+		<Fragment>
+			<DrawerMUI
+				variant="permanent"
+				sx={{
+					display: { xs: 'none', sm: 'block' },
+					'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+				}}
+				open
+			>
+				<DrawerContent {...props} />
+			</DrawerMUI>
+			<DrawerMUI
+				variant="temporary"
+				open={props.isOpen}
+				onClose={() => props.setIsOpen((isOpen: boolean) => !isOpen)}
+				ModalProps={{
+					keepMounted: true, // Better open performance on mobile.
+				}}
+				sx={{
+					display: { xs: 'block', sm: 'none' },
+					'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+				}}
+			>
+				<DrawerContent {...props} />
+			</DrawerMUI>
+		</Fragment>
+
+	);
+};
+
+const DrawerContent = ({isOpen, setIsOpen} :Props) => {
+	const theme = useTheme();
+
+	return (
+		<Fragment>
 			<DrawerHeader>
-        <img src={icon} alt="logo" style={{width: '40px'}}/>
-        <Typography variant="h5" >Baratie</Typography>
-        <IconButton onClick={() => setIsOpen((isOpen: boolean) => !isOpen)}>
-          {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-        </IconButton>
-      </DrawerHeader>
+				<img src={icon} alt="logo" style={{width: '40px'}}/>
+				<Typography variant="h5" style={{cursor: "pointer"}}>
+					<Link to="/admin/dashboard">Massimo</Link>
+				</Typography>
+				<IconButton onClick={() => setIsOpen((isOpen: boolean) => !isOpen)}>
+					{theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+				</IconButton>
+			</DrawerHeader>
 			<Divider />
 			<List>
-				{sections.map((section, index) => (
-					<ListItem button key={section.title} component={NavLink} to={section.path}>
-						<ListItemIcon>
-							{<section.icon />}
-						</ListItemIcon>
-						<ListItemText primary={section.title} />
+				{sections.map((section) => (
+					<ListItem key={section.title} component={NavLink} to={section.path} style={{fontSize: "0.9rem", color: "black"}}>
+						<ListItemButton>
+							<ListItemIcon>
+								{<section.icon />}
+							</ListItemIcon>
+							{ section.title }
+						</ListItemButton>
 					</ListItem>
 				))}
 			</List>
 			<Divider />
-		</DrawerMUI>
-	);
-};
+		</Fragment>
+	)
+}

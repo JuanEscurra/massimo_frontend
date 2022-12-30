@@ -1,4 +1,4 @@
-import { Box, Button, Snackbar, TextField } from '@mui/material'
+import { Box, Button, TextField } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import { register } from '../services/AuthService';
 import { Controller, useForm } from "react-hook-form";

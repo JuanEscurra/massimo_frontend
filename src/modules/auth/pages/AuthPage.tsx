@@ -40,7 +40,7 @@ const AuthPage = (): ReactElement => {
 						}
 					}}>
 					<img src={logo} alt="logo"></img>
-					<h1>Restaurante Baratie</h1>
+					<h1>Restaurante Massimo</h1>
 				</Box>
 				<Box
 					width="55%"
